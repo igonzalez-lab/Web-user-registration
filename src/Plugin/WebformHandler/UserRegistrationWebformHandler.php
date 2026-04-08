@@ -20,14 +20,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Creates or updates a user account based on webform submission values.
  *
  * @WebformHandler(
- *   id = "user_registration",
- *   label = @Translation("User Registration"),
- *   category = @Translation("User"),
- *   description = @Translation("Creates or updates a user account based on submission values."),
- *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
- *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
- *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
- *   tokens = TRUE,
+ * id = "user_registration",
+ * label = @Translation("User Registration"),
+ * category = @Translation("User"),
+ * description = @Translation("Creates or updates a user account based on submission values."),
+ * cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
+ * results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
+ * submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
+ * tokens = TRUE,
  * )
  */
 final class UserRegistrationWebformHandler extends WebformHandlerBase {
@@ -169,9 +169,14 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
       '#visible' => $webform_settings['ajax'],
     ];
 
-    // Default roles upon registration.
-    // @phpstan-ignore function.notFound
-    $roles = array_map(['\Drupal\Component\Utility\Html', 'escape'], user_role_names(TRUE));
+    // Default roles upon registration (Actualizado para Drupal 10+).
+    $roles_entities = \Drupal\user\Entity\Role::loadMultiple();
+    unset($roles_entities['anonymous']);
+    $roles = [];
+    foreach ($roles_entities as $id => $role) {
+      $roles[$id] = \Drupal\Component\Utility\Html::escape($role->label());
+    }
+
     $form['create_user']['roles'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Roles'),
@@ -399,7 +404,7 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
 
       if (!empty($message)) {
         // Messages are stored in configuration and are already translatable
-        // via config translation. Do not pass through t().
+        // via config translation. Do not pass মজthrough t().
         $this->messenger()->addStatus($message);
       }
     }
@@ -412,10 +417,10 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
    * function.
    *
    * @param array $user_data
-   *   Associative array of user data, keyed by user entity property/field.
+   * Associative array of user data, keyed by user entity property/field.
    *
    * @return \Drupal\user\UserInterface
-   *   The user account entity, populated with values.
+   * The user account entity, populated with values.
    */
   private function createUserAccount(array $user_data): UserInterface {
     $lang = $this->languageManager->getCurrentLanguage()->getId();
@@ -459,9 +464,9 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
    * This does NOT save the user entity!
    *
    * @param \Drupal\user\UserInterface $account
-   *   The user account to set the values on.
+   * The user account to set the values on.
    * @param array $user_data
-   *   Associative array of user data, keyed by user entity property/field.
+   * Associative array of user data, keyed by user entity property/field.
    */
   private function updateUserAccount(UserInterface $account, array $user_data): void {
     // User entity does not allow us to update the email address if the
@@ -479,10 +484,10 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
    * Extracts all user values from submission data.
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   *   The webform submission.
+   * The webform submission.
    *
    * @return array
-   *   Associative array of user values, keyed by user entity property/field.
+   * Associative array of user values, keyed by user entity property/field.
    */
   private function getWebformUserData(WebformSubmissionInterface $webform_submission): array {
     $webform_data = $webform_submission->getData();
@@ -505,7 +510,7 @@ final class UserRegistrationWebformHandler extends WebformHandlerBase {
    * Destination options contain user entity properties and fields.
    *
    * @return array
-   *   Array with 'source' and 'destination' keys containing mapping options.
+   * Array with 'source' and 'destination' keys containing mapping options.
    */
   private function getMappingOptions(): array {
     $source_options = [];
