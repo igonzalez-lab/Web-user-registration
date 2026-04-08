@@ -1,0 +1,23 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "webforms",
+    "autowire",
+    "oivanov",
+    "berdir",
+    "Oleg",
+    "Ivanov"
+  ],
+  "flagWords": [
+    "blacklist",
+    "blacklists",
+    "blacklisted",
+    "e-mail",
+    "grey",
+    "queuing",
+    "whitelist",
+    "whitelists",
+    "whitelisted"
+  ]
+}

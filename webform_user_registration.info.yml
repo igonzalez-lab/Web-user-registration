@@ -1,0 +1,8 @@
+name: 'Webform User Registration'
+type: module
+description: 'Create or update a user account upon webform submission.'
+core_version_requirement: ^10.3 || ^11
+package: 'Webform'
+dependencies:
+  - 'drupal:user'
+  - 'webform:webform'

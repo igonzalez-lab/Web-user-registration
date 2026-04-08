@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Webform User Registration module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\webform_user_registration\Hook\WebformUserRegistrationHooks;
+
+/**
+ * Implements hook_help().
+ */
+#[LegacyHook]
+function webform_user_registration_help($route_name, RouteMatchInterface $route_match) {
+  return \Drupal::service(WebformUserRegistrationHooks::class)->help($route_name, $route_match);
+}

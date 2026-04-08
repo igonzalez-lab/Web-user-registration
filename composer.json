@@ -1,0 +1,17 @@
+{
+  "name": "drupal/webform_user_registration",
+  "description": "Webform handler that creates or updates user accounts upon form submission.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.drupal.org/project/webform_user_registration",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/webform_user_registration",
+    "source": "https://git.drupalcode.org/project/webform_user_registration"
+  },
+  "require": {
+    "drupal/webform": "^6.2"
+  },
+  "require-dev": {
+    "drupal/coder": "^8.3"
+  }
+}
